@@ -55,7 +55,7 @@ public class HemenFinalProject extends SimpleApplication {
         
         // Set some custom settings
         AppSettings settings = new AppSettings(true);
-        settings.setTitle("Hemen Final Project");
+        settings.setTitle("Minions Vs Aliens");
         app.setSettings(settings);
 
         // Start the app

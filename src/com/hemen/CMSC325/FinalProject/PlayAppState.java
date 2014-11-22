@@ -13,6 +13,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
+import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.Listener;
 import com.jme3.bullet.BulletAppState;
@@ -21,9 +22,11 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
@@ -95,7 +98,7 @@ public class PlayAppState extends AbstractAppState implements
     
     // Special Effects
     private Shockwave shockwave;
-    
+    private RigidBodyControl landscape;
     // Bullet fields
     private Sphere bullet;
     private SphereCollisionShape bulletCollisionShape;
@@ -129,7 +132,7 @@ public class PlayAppState extends AbstractAppState implements
         
         // Get the physics app state
         bulletAppState = stateManager.getState(BulletAppState.class);
-        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+        //bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         // Set up the bullet object
         bullet = new Sphere(32, 32, 0.2f, true, false);
@@ -146,9 +149,16 @@ public class PlayAppState extends AbstractAppState implements
         initInvisibleWalls();
 
         // We load the scene
-        sceneModel = assetManager.loadModel("Scenes/SunakSunakLa.j3o");
+        //sceneModel = assetManager.loadModel("Scenes/SunakSunakLa.j3o");
+        // We load the scene from the zip file and adjust its size.
+    assetManager.registerLocator("town.zip", ZipLocator.class);
+    sceneModel = assetManager.loadModel("main.scene");
+    sceneModel.setLocalScale(2f);
         sceneModel.setLocalTranslation(0, -30, 0);
-
+CollisionShape sceneShape =
+            CollisionShapeFactory.createMeshShape((Node) sceneModel);
+    landscape = new RigidBodyControl(sceneShape, 0);
+    sceneModel.addControl(landscape);
         // Init materials
         initMaterials();
 
@@ -182,12 +192,15 @@ public class PlayAppState extends AbstractAppState implements
         rootNode.attachChild(megaDroneHitSound);
         
         // Set up the hover Jet
-        Spatial hoverJet = assetManager.loadModel("Models/FighterBomber.mesh.xml");
-        Material mat_hj = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        //Spatial hoverJet = assetManager.loadModel("Models/FighterBomber.mesh.xml");
+        //Spatial hoverJet = assetManager.loadModel("Models/minionMesh/Sphere.006.mesh.xml");
+        Spatial hoverJet = assetManager.loadModel("Models/minionMesh/minionFinal.j3o");
+        //hoverJet.setLocalRotation(hoverJetQ);
+        //Material mat_hj = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
 
-        mat_hj.setTexture("LightMap", assetManager.loadTexture(
-                new TextureKey("Models/FighterBomber.png", false)));
-        hoverJet.setMaterial(mat_hj);
+        //mat_hj.setTexture("LightMap", assetManager.loadTexture(
+                //new TextureKey("Models/FighterBomber.png", false)));
+        //hoverJet.setMaterial(mat_hj);
         hoverJet.setName("hoverJet");
         hoverJetQ = Quaternion.IDENTITY;
         playerNode.attachChild(hoverJet);
