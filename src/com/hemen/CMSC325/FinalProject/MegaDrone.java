@@ -26,7 +26,7 @@ public class MegaDrone extends Enemy {
     private long lastSpawnTime = 0;
     private int health = 100;
     public static final int hitPoint = 5;
-    public static final int killPoint = 100;
+    public static final int killPoint = 75;
     
     private Set<MicroDrone> minions;
   
