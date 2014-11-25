@@ -22,7 +22,7 @@ public class MegaDrone extends Enemy {
     private DroneControl control;
     private GhostControl gControl;
     private final float innerRadius = 9;
-    private final float outterRadius = 50;
+    private final float outterRadius = 100;
     private long lastSpawnTime = 0;
     private int health = 100;
     public static final int hitPoint = 5;
@@ -44,7 +44,7 @@ public class MegaDrone extends Enemy {
         minions = new HashSet<MicroDrone>();
         
         // Creates a rough approximation of the shape and makes it float at Y = 35 
-        control = new DroneControl(new SphereCollisionShape(innerRadius), 3f, target, 35f);
+        control = new DroneControl(new SphereCollisionShape(innerRadius), 3f, target, 5f);
         control.setLinearDamping(0.7f);
         control.setAngularDamping(1.0f);
         control.setFriction(0f);

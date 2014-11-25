@@ -171,7 +171,8 @@ CollisionShape sceneShape =
         playerNode = new Node("player");
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 3f, 1);
         player = new CharacterControl(capsuleShape, 0.05f);
-        player.setViewDirection(new Vector3f(1, 0, 0));
+                 player.setViewDirection(new Vector3f(0, 0, 1));
+
         player.addCollideWithGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
         player.setJumpSpeed(20);
         player.setFallSpeed(30);
@@ -210,6 +211,8 @@ CollisionShape sceneShape =
         chaseCam = new ChaseCamera(cam, playerNode, inputManager);
         chaseCam.setSmoothMotion(false);
         chaseCam.setLookAtOffset(new Vector3f(0, 6f, 0));
+                //chaseCam.setLookAtOffset(new Vector3f(0, 0, 0));
+
         chaseCam.setZoomSensitivity(0);
         chaseCam.setDragToRotate(false);
         chaseCam.setMinVerticalRotation(-(FastMath.HALF_PI+ 0.7f));
@@ -217,8 +220,9 @@ CollisionShape sceneShape =
         chaseCam.setInvertVerticalAxis(true);
         
         // Move the player to the starting location
-        player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
-
+        //player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
+player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
+        
         // Init the mothership and make the sensor field only collide with the player
         megaDrone = new MegaDrone("megaDrone", ball_B, playerNode, assetManager);
         megaDrone.getGhostControl().setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
