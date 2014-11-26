@@ -32,7 +32,7 @@ public class MegaDrone extends Enemy {
   
     
     public MegaDrone(String name, Material mat, Node target, AssetManager assetManager) {
-        s =  assetManager.loadModel("Models/Mothership/Mothership.j3o");
+        s =  assetManager.loadModel("Models/Mothership/drone.j3o");
         s.setLocalTranslation(0f, -1f, 0f);
         s.setLocalScale(6f);
         s.setName(name);
