@@ -16,12 +16,14 @@
             <panel id="panel_mid_bottom" height="50%" width="75%" align="center" childLayout="vertical"/>
             <panel id="panel_bottom" height="25%" width="75%" align="center" childLayout="horizontal">
                 <panel id="StartPanel" height="50%" width="50%" align="center" childLayout="center">
-                    <control name="button" id="StartButton" align="center" label="Start" valign="center"/>
+                    <control name="button" id="StartButton" align="center" label="Start" valign="center">
                       <interact onClick="startGame()" />
+                    </control>
                 </panel>
                 <panel id="QuitPanel" height="50%" width="50%" align="center" childLayout="center">
-                    <control name="button" id="QuitButton" align="center" label="Quit" valign="center"/>
+                    <control name="button" id="QuitButton" align="center" label="Quit" valign="center">
                      <interact onClick="quit()" />
+                    </control>
                 </panel>
             </panel>
         </layer>
@@ -42,8 +44,9 @@
         <layer id="GLayer5" height="90%" width="90%" align="center" childLayout="vertical">
             <panel id="pausedText" height="50%" width="100%" childLayout="center"/>
             <panel id="reset_panel" height="50%" width="100%" childLayout="center">
-                <control name="button" id="ContinueButton" align="center" label="Continue" valign="center"/>
+                <control name="button" id="ContinueButton" align="center" label="Continue" valign="center">
                  <interact onClick="continueGame()" />
+                </control>
             </panel>
         </layer>
     </screen>
@@ -55,8 +58,9 @@
             <panel id="GPanel11" height="6%" width="100%" childLayout="horizontal"/>
             <panel id="GPanel12" height="69%" width="100%" childLayout="horizontal"/>
             <panel id="endButton" height="25%" width="100%" childLayout="center">
-                <control name="button" id="EndButton" align="center" label="OK" valign="center"/>
+                <control name="button" id="EndButton" align="center" label="OK" valign="center">
                  <interact onClick="ackEnd()" />
+                </control>
             </panel>
         </layer>
     </screen>
