@@ -16,13 +16,13 @@ import java.util.Set;
  * @author melombuki
  */
 public class MegaDrone extends Enemy {
-    private final static int MAX_MINIONS = 3;
+    private final static int MAX_MINIONS = 10;
     private Node target;
     private Spatial s;
     private DroneControl control;
     private GhostControl gControl;
-    private final float innerRadius = 9;
-    private final float outterRadius = 100;
+    private final float innerRadius = 40;
+    private final float outterRadius = 150;
     private long lastSpawnTime = 0;
     private int health = 100;
     public static final int hitPoint = 5;
@@ -34,7 +34,7 @@ public class MegaDrone extends Enemy {
     public MegaDrone(String name, Material mat, Node target, AssetManager assetManager) {
         s =  assetManager.loadModel("Models/Mothership/drone.j3o");
         s.setLocalTranslation(0f, -1f, 0f);
-        s.setLocalScale(6f);
+        s.setLocalScale(0.3f);
         s.setName(name);
         
         // Store handle to the target to pass to minions
@@ -45,7 +45,7 @@ public class MegaDrone extends Enemy {
         
         
         // Creates a rough approximation of the shape and makes it float at Y = 35 
-        control = new DroneControl(new SphereCollisionShape(innerRadius), 3f, target, 5f);
+        control = new DroneControl(new SphereCollisionShape(innerRadius), 3f, target, 15f);
         control.setLinearDamping(0.7f);
         control.setAngularDamping(1.0f);
         control.setFriction(0f);
@@ -63,11 +63,11 @@ public class MegaDrone extends Enemy {
     
     public GhostControl getGhostControl() {return gControl;}
     
-    public MicroDrone createMicroDrone(Material mat, Vector3f playerLocation) {
+    public MicroDrone createMicroDrone(Material mat, Vector3f playerLocation, AssetManager assetManager) {
         if(System.currentTimeMillis() - lastSpawnTime > 1000 &&
                 getMinions().size() <= MAX_MINIONS) {
             lastSpawnTime = System.currentTimeMillis();
-            MicroDrone m = new MicroDrone("microDrone", mat, target);
+            MicroDrone m = new MicroDrone("microDrone", mat, target, assetManager);
             getMinions().add(m);
             return m;
         }

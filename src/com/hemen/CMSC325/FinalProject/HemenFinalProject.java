@@ -34,6 +34,7 @@ package com.hemen.CMSC325.FinalProject;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
 
 /**
@@ -75,6 +76,8 @@ public class HemenFinalProject extends SimpleApplication {
         
         playAppState = new PlayAppState();     //game play
         stateManager.attach(playAppState);
+        
+        viewPort.setBackgroundColor(new ColorRGBA(0.7f,0.8f,1f,1f));
     }
   
     @Override

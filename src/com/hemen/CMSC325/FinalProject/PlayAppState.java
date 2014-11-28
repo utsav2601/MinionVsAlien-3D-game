@@ -132,12 +132,18 @@ public class PlayAppState extends AbstractAppState implements
         
         // Get the physics app state
         bulletAppState = stateManager.getState(BulletAppState.class);
-        //bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+       // bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         // Set up the bullet object
-        bullet = new Sphere(32, 32, 0.2f, true, false);
+        //bullet = new Sphere(32, 32, 0.2f, true, false);
+        bullet = new Sphere(32, 32, 1f, true, false);
+        Geometry g = new Geometry("Bullet", bullet);
+        g.setMaterial(ball_A);
+
         bullet.setTextureMode(Sphere.TextureMode.Projected);
-        bulletCollisionShape = new SphereCollisionShape(0.2f);
+        bulletCollisionShape = new SphereCollisionShape(1f);
+        //bulletCollisionShape = new SphereCollisionShape(0.2f);
+
         
         // Set up the lights for the scene
         setUpLight();
@@ -151,7 +157,7 @@ public class PlayAppState extends AbstractAppState implements
         // We load the scene
         //sceneModel = assetManager.loadModel("Scenes/SunakSunakLa.j3o");
         // We load the scene from the zip file and adjust its size.
-    assetManager.registerLocator("town.zip", ZipLocator.class);
+    assetManager.registerLocator("town1.zip", ZipLocator.class);
     sceneModel = assetManager.loadModel("main.scene");
     sceneModel.setLocalScale(2f);
         sceneModel.setLocalTranslation(0, -30, 0);
@@ -399,7 +405,7 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         
         // Check for infiltration of the mother ship's airspace
         if(megaDrone.getGhostControl().getOverlappingObjects().contains(playerNode.getControl(CharacterControl.class))) {
-            MicroDrone m = megaDrone.createMicroDrone(ball_A, player.getPhysicsLocation());
+            MicroDrone m = megaDrone.createMicroDrone(ball_A, player.getPhysicsLocation(),assetManager);
             if(m != null) {
                 Vector3f v = playerNode.getWorldTranslation().
                         subtract(megaDrone.getSpatial().getWorldTranslation()).normalize();
