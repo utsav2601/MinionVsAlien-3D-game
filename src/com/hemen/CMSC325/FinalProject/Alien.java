@@ -16,7 +16,7 @@ import com.jme3.scene.shape.Sphere;
  * 
  * @author Joshua P. Hemen
  */
-public class MicroDrone extends Enemy {
+public class Alien extends Enemy {
     //private Sphere s;
     //private Geometry g;
     private DroneControl control;
@@ -24,7 +24,7 @@ public class MicroDrone extends Enemy {
     public final static int points = 25;
     private Spatial sp;
   
-    public MicroDrone(String name, Material mat, Node target, AssetManager assetManager) {
+    public Alien(String name, Material mat, Node target, AssetManager assetManager) {
 //        s = new Sphere(32, 32, radius);
 //        g = new Geometry(name, s);
 //        g.setMaterial(mat);

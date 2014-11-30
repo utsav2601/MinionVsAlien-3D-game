@@ -81,7 +81,7 @@ public class PlayAppState extends AbstractAppState implements
     private CharacterControl player;
     private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false;
-    private MegaDrone megaDrone;
+    private AlienShip megaDrone;
     private Material ball_hit, ball_A, ball_B, mat_bullet, mat_invis;
     private int totalRounds = 0; //1 round for each player * desired # of cycles
     private int totalPoints = 0;
@@ -99,6 +99,7 @@ public class PlayAppState extends AbstractAppState implements
     // Special Effects
     private Shockwave shockwave;
     private RigidBodyControl landscape;
+    
     // Bullet fields
     private Sphere bullet;
     private SphereCollisionShape bulletCollisionShape;
@@ -132,7 +133,7 @@ public class PlayAppState extends AbstractAppState implements
         
         // Get the physics app state
         bulletAppState = stateManager.getState(BulletAppState.class);
-       // bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+       //bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         // Set up the bullet object
         //bullet = new Sphere(32, 32, 0.2f, true, false);
@@ -199,15 +200,7 @@ CollisionShape sceneShape =
         rootNode.attachChild(megaDroneHitSound);
         
         // Set up the hover Jet
-        //Spatial hoverJet = assetManager.loadModel("Models/FighterBomber.mesh.xml");
-        //Spatial hoverJet = assetManager.loadModel("Models/minionMesh/Sphere.006.mesh.xml");
         Spatial hoverJet = assetManager.loadModel("Models/minionMesh/minionFinal.j3o");
-        //hoverJet.setLocalRotation(hoverJetQ);
-        //Material mat_hj = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-
-        //mat_hj.setTexture("LightMap", assetManager.loadTexture(
-                //new TextureKey("Models/FighterBomber.png", false)));
-        //hoverJet.setMaterial(mat_hj);
         hoverJet.setName("hoverJet");
         hoverJetQ = Quaternion.IDENTITY;
         playerNode.attachChild(hoverJet);
@@ -230,7 +223,7 @@ CollisionShape sceneShape =
 player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         
         // Init the mothership and make the sensor field only collide with the player
-        megaDrone = new MegaDrone("megaDrone", ball_B, playerNode, assetManager);
+        megaDrone = new AlienShip("alien", ball_B, playerNode, assetManager);
         megaDrone.getGhostControl().setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
         megaDrone.getGhostControl().setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_02);
 
@@ -244,7 +237,6 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         bulletAppState.getPhysicsSpace().add(player);
         bulletAppState.getPhysicsSpace().addCollisionListener(this);
   }
-    
    /*
    * This is the main event loop--walking happens here.
    * We check in which direction the player is walking by interpreting
@@ -351,12 +343,12 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
             rootNode.detachAllChildren();
             rootNode.removeLight(al);
             rootNode.removeLight(dl);
-            megaDrone.getMinions().clear();
+            megaDrone.getAlien().clear();
         }
     }
 
     /*
-     * This method sets up the mothership of type MegaDrone and attaches its 
+     * This method sets up the mothership of type AlienShip and attaches its 
      * physical controls to the physics space.
      */
     public void setUpObjectives() {
@@ -376,28 +368,28 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         Spatial NodeB = e.getNodeB();
   
         // Check for collision with a microDrone
-        if(NodeA.getName().equals("microDrone")) { //check NodeA
+        if(NodeA.getName().equals("Alien")) { //check NodeA
             if(NodeB.getName().equals("bullet")) {
                 shockwave.explode(NodeA.getWorldTranslation());
                 bulletAppState.getPhysicsSpace().remove(e.getNodeA());
                 e.getNodeA().removeFromParent();
-                megaDrone.removeMinion(NodeA);
+                megaDrone.removeAlien(NodeA);
                 boomSound.setLocalTranslation(NodeA.getWorldTranslation());
                 boomSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), MicroDrone.points);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), Alien.points);
             } else if(NodeB.getName().equals("player")) {
                  //TODO: make the player move or mess up the controls a bit or score
 
             }
-        } else if(NodeB.getName().equals("microDrone")) {  //check NodeB
+        } else if(NodeB.getName().equals("Alien")) {  //check NodeB
             if(NodeA.getName().equals("bullet")) {
                 shockwave.explode(NodeA.getWorldTranslation());
                 bulletAppState.getPhysicsSpace().remove(e.getNodeB());
                 e.getNodeB().removeFromParent();
-                megaDrone.removeMinion(NodeB);
+                megaDrone.removeAlien(NodeB);
                 boomSound.setLocalTranslation(NodeB.getWorldTranslation());
                 boomSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeB.getName(), MicroDrone.points);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeB.getName(), Alien.points);
             } else if (NodeA.getName().equals("player")) {
                  //TODO: make the player move or mess up the controls a bit or score
             }
@@ -405,7 +397,7 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         
         // Check for infiltration of the mother ship's airspace
         if(megaDrone.getGhostControl().getOverlappingObjects().contains(playerNode.getControl(CharacterControl.class))) {
-            MicroDrone m = megaDrone.createMicroDrone(ball_A, player.getPhysicsLocation(),assetManager);
+            Alien m = megaDrone.createAlien(ball_A, player.getPhysicsLocation(),assetManager);
             if(m != null) {
                 Vector3f v = playerNode.getWorldTranslation().
                         subtract(megaDrone.getSpatial().getWorldTranslation()).normalize();
@@ -421,11 +413,11 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
             if(megaDrone.gethealth() > 0) {
                 megaDroneHitSound.setLocalTranslation(megaDrone.getSpatial().getWorldTranslation());
                 megaDroneHitSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), MegaDrone.hitPoint);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), AlienShip.hitPoint);
             } else {
                 boomSound.setLocalTranslation(megaDrone.getSpatial().getWorldTranslation());
                 boomSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), MegaDrone.killPoint);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), AlienShip.killPoint);
             }
             
         } else if(NodeB.getName().equals("megaDrone") && NodeA.getName().equals("bullet")) {
@@ -433,11 +425,11 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
             if(megaDrone.gethealth() > 0) {
                 megaDroneHitSound.setLocalTranslation(megaDrone.getSpatial().getWorldTranslation());
                 megaDroneHitSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), MegaDrone.hitPoint);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), AlienShip.hitPoint);
             } else {
                 boomSound.setLocalTranslation(megaDrone.getSpatial().getWorldTranslation());
                 boomSound.playInstance();
-                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), MegaDrone.killPoint);
+                stateManager.getState(GuiAppState.class).showHitObject(NodeA.getName(), AlienShip.killPoint);
             }
         }
         
@@ -582,11 +574,11 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
      */
     public void resetMothership() {
         megaDrone.unhit();
-        for(MicroDrone m : megaDrone.getMinions()) {
+        for(Alien m : megaDrone.getAlien()) {
             bulletAppState.getPhysicsSpace().remove(m.getRigidBodyControl());
             m.getGeo().removeFromParent();  
         }
-        megaDrone.clearMinions();
+        megaDrone.clearAlien();
         megaDrone.getRigidBodyControl().setPhysicsLocation(new Vector3f(65f, 35f, -65f));
     }
     
@@ -703,9 +695,9 @@ player.setPhysicsLocation(new Vector3f(-95f, 30f, 95f));
         Vector3f playerLocation = player.getPhysicsLocation();
         Vector3f v;
         
-        Set<MicroDrone> m = megaDrone.getMinions();
+        Set<Alien> m = megaDrone.getAlien();
         
-        for(MicroDrone md : m) {
+        for(Alien md : m) {
             v = playerLocation.clone();
             v = v.subtract(md.getRigidBodyControl().getPhysicsLocation()).normalizeLocal();
             md.getRigidBodyControl().applyImpulse(v.mult(0.2f), Vector3f.ZERO);

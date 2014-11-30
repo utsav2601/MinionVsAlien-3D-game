@@ -15,8 +15,8 @@ import java.util.Set;
  *
  * @author melombuki
  */
-public class MegaDrone extends Enemy {
-    private final static int MAX_MINIONS = 10;
+public class AlienShip extends Enemy {
+    private final static int MAX_ALIENS = 10;
     private Node target;
     private Spatial s;
     private DroneControl control;
@@ -28,20 +28,20 @@ public class MegaDrone extends Enemy {
     public static final int hitPoint = 5;
     public static final int killPoint = 75;
     
-    private Set<MicroDrone> minions;
+    private Set<Alien> alien;
   
     
-    public MegaDrone(String name, Material mat, Node target, AssetManager assetManager) {
+    public AlienShip(String name, Material mat, Node target, AssetManager assetManager) {
         s =  assetManager.loadModel("Models/Mothership/drone.j3o");
         s.setLocalTranslation(0f, -1f, 0f);
         s.setLocalScale(0.3f);
         s.setName(name);
         
-        // Store handle to the target to pass to minions
+        // Store handle to the target to pass to alien
         this.target = target;
         
         // Set up the minion queue
-        minions = new HashSet<MicroDrone>();
+        alien = new HashSet<Alien>();
         
         
         // Creates a rough approximation of the shape and makes it float at Y = 35 
@@ -63,12 +63,12 @@ public class MegaDrone extends Enemy {
     
     public GhostControl getGhostControl() {return gControl;}
     
-    public MicroDrone createMicroDrone(Material mat, Vector3f playerLocation, AssetManager assetManager) {
+    public Alien createAlien(Material mat, Vector3f playerLocation, AssetManager assetManager) {
         if(System.currentTimeMillis() - lastSpawnTime > 1000 &&
-                getMinions().size() <= MAX_MINIONS) {
+                getAlien().size() <= MAX_ALIENS) {
             lastSpawnTime = System.currentTimeMillis();
-            MicroDrone m = new MicroDrone("microDrone", mat, target, assetManager);
-            getMinions().add(m);
+            Alien m = new Alien("Alien", mat, target, assetManager);
+            getAlien().add(m);
             return m;
         }
         return null; // no minion was added to the scene
@@ -89,16 +89,16 @@ public class MegaDrone extends Enemy {
     }
 
     /**
-     * @return the minions
+     * @return the alien
      */
-    public Set<MicroDrone> getMinions() {
-        return minions;
+    public Set<Alien> getAlien() {
+        return alien;
     }
     
-    public boolean removeMinion(Spatial m) {
-        for(MicroDrone md : minions) {
+    public boolean removeAlien(Spatial m) {
+        for(Alien md : alien) {
             if(md.getGeo().hashCode() == m.hashCode()) {
-                if(minions.remove(md)) {
+                if(alien.remove(md)) {
                     return false;
                 }
             }
@@ -106,7 +106,7 @@ public class MegaDrone extends Enemy {
         return false;
     }
     
-    public void clearMinions() {
-        minions.clear();
+    public void clearAlien() {
+        alien.clear();
     }
 }
