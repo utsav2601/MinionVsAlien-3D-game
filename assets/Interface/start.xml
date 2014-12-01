@@ -8,7 +8,7 @@
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
     <!-- ... -->
-    <screen id="start" controller="com.hemen.CMSC325.FinalProject.GuiAppState">
+    <screen id="start" controller="com.CMPE202.Team31Project.GuiAppState">
         <layer id="background" childLayout="center">
              <image filename="Interface/alienVSminion.png" height="100%" width="100%"></image>
         </layer>
@@ -47,7 +47,7 @@
         </layer>
     </screen>
     <!-- -->
-    <screen id="hud" controller="com.hemen.CMSC325.FinalProject.GuiAppState">
+    <screen id="hud" controller="com.CMPE202.Team31Project.GuiAppState">
         <layer id="background" childLayout="center">
             <image filename="Interface/HudBackground.png" height="100%" width="100%"></image>
         </layer>
@@ -65,7 +65,7 @@
         </layer>
     </screen>
     <!-- -->
-    <screen id="pause" controller="com.hemen.CMSC325.FinalProject.GuiAppState">
+    <screen id="pause" controller="com.CMPE202.Team31Project.GuiAppState">
         <layer id="background" childLayout="center">
            <image filename="Interface/GUIBackground.png" height="100%" width="100%"></image>
         </layer>
@@ -81,7 +81,7 @@
         </layer>
     </screen>
     <!-- -->
-    <screen id="end" controller="com.hemen.CMSC325.FinalProject.GuiAppState">
+    <screen id="end" controller="com.CMPE202.Team31Project.GuiAppState">
         <layer id="background" childLayout="center">
             <image filename="Interface/HudBackground.png" height="100%" width="100%"></image>
         </layer>

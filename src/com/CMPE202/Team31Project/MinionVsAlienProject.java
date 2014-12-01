@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.hemen.CMSC325.FinalProject;
+package com.CMPE202.Team31Project;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
@@ -45,14 +45,14 @@ import com.jme3.system.AppSettings;
  * 
  * @author Joshua P. Hemen
  */
-public class HemenFinalProject extends SimpleApplication {
+public class MinionVsAlienProject extends SimpleApplication {
     private GuiAppState     startAppState;
     private PlayAppState    playAppState;
     private BulletAppState  bulletAppState;
     private boolean         isStart = true;
     
     public static void main(String[] args) {
-        HemenFinalProject app = new HemenFinalProject();
+        MinionVsAlienProject app = new MinionVsAlienProject();
         
         // Set some custom settings
         AppSettings settings = new AppSettings(true);

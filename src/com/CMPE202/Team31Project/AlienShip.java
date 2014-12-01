@@ -1,4 +1,4 @@
-package com.hemen.CMSC325.FinalProject;
+package com.CMPE202.Team31Project;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -29,6 +29,7 @@ public class AlienShip extends Enemy {
     public static final int killPoint = 75;
     
     private Set<Alien> alien;
+    private Set<Gumball> gball;
   
     
     public AlienShip(String name, Material mat, Node target, AssetManager assetManager) {
@@ -42,7 +43,7 @@ public class AlienShip extends Enemy {
         
         // Set up the minion queue
         alien = new HashSet<Alien>();
-        
+        gball = new HashSet<Gumball>();
         
         // Creates a rough approximation of the shape and makes it float at Y = 35 
         control = new DroneControl(new SphereCollisionShape(innerRadius), 3f, target, 15f);
@@ -73,6 +74,17 @@ public class AlienShip extends Enemy {
         }
         return null; // no minion was added to the scene
     }
+    
+    public Gumball createGumball(Material mat, Vector3f playerLocation) {
+        if(System.currentTimeMillis() - lastSpawnTime > 1000 &&
+                getAlien().size() <= MAX_ALIENS) {
+            lastSpawnTime = System.currentTimeMillis();
+            Gumball m = new Gumball("Gumball", mat, target);
+            getGumball().add(m);
+            return m;
+        }
+        return null; // no minion was added to the scene
+    }
 
     public int gethealth() {return health;}
     
@@ -95,6 +107,10 @@ public class AlienShip extends Enemy {
         return alien;
     }
     
+    public Set<Gumball> getGumball() {
+        return gball;
+    }
+    
     public boolean removeAlien(Spatial m) {
         for(Alien md : alien) {
             if(md.getGeo().hashCode() == m.hashCode()) {
@@ -106,7 +122,22 @@ public class AlienShip extends Enemy {
         return false;
     }
     
+    public boolean removeGumball(Spatial m) {
+        for(Gumball md : gball) {
+            if(md.getGeo().hashCode() == m.hashCode()) {
+                if(gball.remove(md)) {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    
     public void clearAlien() {
         alien.clear();
+    }
+    
+    public void clearGumball() {
+        gball.clear();
     }
 }

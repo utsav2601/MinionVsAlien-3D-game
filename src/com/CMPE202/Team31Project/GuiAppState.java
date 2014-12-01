@@ -1,4 +1,4 @@
-package com.hemen.CMSC325.FinalProject;
+package com.CMPE202.Team31Project;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

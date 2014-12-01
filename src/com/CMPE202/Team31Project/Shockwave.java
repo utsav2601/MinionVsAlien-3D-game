@@ -1,4 +1,4 @@
-package com.hemen.CMSC325.FinalProject;
+package com.CMPE202.Team31Project;
 
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh.Type;
